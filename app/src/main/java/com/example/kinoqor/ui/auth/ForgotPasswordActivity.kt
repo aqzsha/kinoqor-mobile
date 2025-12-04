@@ -8,18 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.kinoqor.data.local.AuthPreferences
 import com.example.kinoqor.data.repository.AuthRepository
-import com.example.kinoqor.databinding.ActivityLoginBinding
-import com.example.kinoqor.ui.home.HomeActivity
+import com.example.kinoqor.databinding.ActivityForgotBinding
+import com.example.kinoqor.ui.auth.LoginActivity
 
-class LoginActivity : AppCompatActivity() {
+class ForgotPasswordActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityForgotBinding
     private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityForgotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val prefs = AuthPreferences(this)
@@ -27,60 +27,50 @@ class LoginActivity : AppCompatActivity() {
         val factory = AuthViewModelFactory(repository, prefs)
         viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
 
-        viewModel.getSavedToken()?.let {
-            openHome()
-            return
-        }
-
         setupListeners()
         observeViewModel()
     }
 
     private fun setupListeners() {
-        binding.btnLogin.setOnClickListener {
+        binding.btnSendReset.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString()
-            viewModel.login(email, password)
+            viewModel.forgotPassword(email)
         }
 
-        binding.tvForgot.setOnClickListener {
-            startActivity(Intent(this, ForgotPasswordActivity::class.java))
-        }
-
-        binding.tvSignupAction.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+        binding.tvSignIn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 
     private fun observeViewModel() {
         viewModel.state.observe(this) { state ->
             when (state) {
+
                 is LoginUiState.Idle -> {
-                    binding.btnLogin.isEnabled = true
-                    binding.btnLogin.text = "Login"
+                    binding.btnSendReset.isEnabled = true
+                    binding.btnSendReset.text = "Send reset link"
                 }
 
                 is LoginUiState.Loading -> {
-                    binding.btnLogin.isEnabled = false
-                    binding.btnLogin.text = "Loading..."
+                    binding.btnSendReset.isEnabled = false
+                    binding.btnSendReset.text = "Sending..."
                 }
 
                 is LoginUiState.Success -> {
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                    openHome()
+                    Toast.makeText(this, "Reset link sent. Check your email.", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, VerifyPinActivity::class.java)
+                    intent.putExtra("extra_email", binding.etEmail.text.toString())
+                    startActivity(intent)
                 }
 
                 is LoginUiState.Error -> {
-                    binding.btnLogin.isEnabled = true
-                    binding.btnLogin.text = "Login"
+                    binding.btnSendReset.isEnabled = true
+                    binding.btnSendReset.text = "Send reset link"
                     Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-    }
-
-    private fun openHome() {
-        startActivity(Intent(this, HomeActivity::class.java))
-        finish()
     }
 }
