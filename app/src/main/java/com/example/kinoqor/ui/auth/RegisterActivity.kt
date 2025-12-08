@@ -70,7 +70,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun openHome() {
-        startActivity(Intent(this, HomeActivity::class.java))
-        finishAffinity()
+        val intent = Intent(this, com.example.kinoqor.ui.MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }
