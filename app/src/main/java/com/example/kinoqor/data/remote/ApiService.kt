@@ -4,6 +4,7 @@ import com.example.kinoqor.data.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.GET
 
 interface ApiService {
 
@@ -32,4 +33,6 @@ interface ApiService {
         @Body body: ResetPasswordRequest
     ): Response<Void>
 
+    @GET("api/v1/film/list")
+    suspend fun getFilmList(): Response<List<FilmDto>>
 }
