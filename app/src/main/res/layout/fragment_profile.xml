@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Профиль"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvEmailStatic"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_input_light"
+        android:padding="12dp"
+        android:textColor="#666666"
+        android:text="example@email.com"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMyTickets"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_ticket" />
+                <TextView
+                    android:layout_marginStart="12dp"
+                    android:text="Мои билеты"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardReviews"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_reviews" />
+                <TextView
+                    android:layout_marginStart="12dp"
+                    android:text="Reviews"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Logout"
+            android:textColor="#FF3B30"
+            android:background="@drawable/bg_button_logout" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,20 +1,46 @@
-package com.example.kinoqor
+package com.example.kinoqor.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.kinoqor.R
+import com.example.kinoqor.databinding.ActivityMainBinding
+import com.example.kinoqor.ui.home.CinemasFragment
+import com.example.kinoqor.ui.home.MoviesFragment
+import com.example.kinoqor.ui.home.ProfileFragment
+import com.example.kinoqor.ui.home.TicketsFragment
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    private val moviesFragment = MoviesFragment()
+    private val cinemasFragment = CinemasFragment()
+    private val ticketsFragment = TicketsFragment()
+    private val profileFragment = ProfileFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, moviesFragment)
+            .commit()
+
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_movies -> showFragment(moviesFragment)
+                R.id.navigation_cinemas -> showFragment(cinemasFragment)
+                R.id.navigation_tickets -> showFragment(ticketsFragment)
+                R.id.navigation_profile -> showFragment(profileFragment)
+            }
+            true
         }
+    }
+
+    private fun showFragment(fragment: androidx.fragment.app.Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment)
+            .commit()
     }
 }
