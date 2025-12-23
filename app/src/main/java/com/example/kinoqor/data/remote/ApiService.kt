@@ -9,27 +9,27 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @POST("auth/0 login")
+    @POST("auth/login")
     suspend fun login(
         @Body body: LoginRequest
     ): Response<LoginResponse>
 
-    @POST("user/create")
+    @POST("auth/user/create")
     suspend fun register(
         @Body body: RegisterRequest
     ): Response<LoginResponse>
 
-    @POST("password/forgot")
+    @POST("auth/password/forgot")
     suspend fun forgotPassword(
         @Body body: ForgotRequest
     ): Response<Void>
 
-    @POST("password/verify-pin")
+    @POST("auth/password/verify-pin")
     suspend fun verifyPin(
         @Body body: VerifyPinRequest
     ): Response<VerifyPinResponse>
 
-    @POST("password/reset")
+    @POST("auth/password/reset")
     suspend fun resetPassword(
         @Body body: ResetPasswordRequest
     ): Response<Void>

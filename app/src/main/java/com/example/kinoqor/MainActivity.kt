@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kinoqor.R
 import com.example.kinoqor.databinding.ActivityMainBinding
-import com.example.kinoqor.ui.home.CinemasFragment
+import com.example.kinoqor.ui.cinema.CinemasFragment
 import com.example.kinoqor.ui.home.MoviesFragment
 import com.example.kinoqor.ui.home.ProfileFragment
 import com.example.kinoqor.ui.home.TicketsFragment

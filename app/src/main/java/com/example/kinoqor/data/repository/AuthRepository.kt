@@ -46,10 +46,15 @@ class AuthRepository {
 
     suspend fun verifyPin(email: String, pinCode: String): Result<String> {
         return try {
-            val response = RetrofitClient.api.verifyPin(VerifyPinRequest(email, pinCode))
+            val response = RetrofitClient.api.verifyPin(
+                VerifyPinRequest(
+                    email = email.trim(),
+                    pin_code = pinCode.trim(),
+                )
+            )
+
             if (response.isSuccessful && response.body() != null) {
-                val token = response.body()!!.token
-                Result.success(token)
+                Result.success(response.body()!!.token)
             } else {
                 Result.failure(Exception("Invalid code or server error"))
             }
