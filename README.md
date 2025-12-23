@@ -37,8 +37,6 @@
 * **Android Studio**
 * **MVVM**
 * **Retrofit + OkHttp** — сетевые запросы
-* **Firebase Authentication** — логин, регистрация, смена пароля
-* **Firebase Firestore** — хранение данных (при необходимости)
 * **RecyclerView** — отображение списков
 
 ---
