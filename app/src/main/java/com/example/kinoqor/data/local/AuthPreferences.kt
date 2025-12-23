@@ -1,6 +1,7 @@
 package com.example.kinoqor.data.local
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.kinoqor.data.remote.dto.LoginResponse
 
 class AuthPreferences(context: Context) {
 

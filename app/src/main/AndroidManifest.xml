@@ -17,8 +17,6 @@
 
         <activity android:name=".ui.home.HomeActivity" />
 
-        <activity android:name=".ui.auth.RegisterActivity" />
-
         <activity android:name=".ui.auth.ForgotPasswordActivity" />
 
         <activity android:name=".ui.auth.VerifyPinActivity" />

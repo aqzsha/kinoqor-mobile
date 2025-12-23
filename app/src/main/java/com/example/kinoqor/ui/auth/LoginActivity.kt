@@ -47,9 +47,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
-        binding.tvSignupAction.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
     }
 
     private fun observeViewModel() {

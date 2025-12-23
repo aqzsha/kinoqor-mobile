@@ -3,66 +3,63 @@ package com.example.kinoqor.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinoqor.R
-import com.example.kinoqor.data.remote.dto.FilmDto
-import android.widget.ImageView
-import android.widget.Toast
-import android.widget.LinearLayout
-import android.widget.FrameLayout
-import android.widget.Button
+import com.example.kinoqor.data.local.entity.FilmEntity
+class FilmAdapter(
+    private val onClick: (Long) -> Unit
+) : RecyclerView.Adapter<FilmAdapter.VH>() {
 
-class FilmAdapter(private val items: MutableList<FilmDto> = mutableListOf()) :
-    RecyclerView.Adapter<FilmAdapter.FilmVH>() {
+    private val items = mutableListOf<FilmEntity>()
 
-    var onItemClick: ((FilmDto) -> Unit)? = null
-
-    fun setItems(list: List<FilmDto>) {
+    fun setItems(list: List<FilmEntity>) {
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmVH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_film, parent, false)
-        return FilmVH(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_film, parent, false)
+        return VH(view)
     }
 
-    override fun onBindViewHolder(holder: FilmVH, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        val film = items[position]
+        holder.bind(film)
+        holder.itemView.setOnClickListener {
+            onClick(film.id)
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class FilmVH(view: View) : RecyclerView.ViewHolder(view) {
-        private val ivPoster: ImageView = view.findViewById(R.id.ivPoster)
-        private val tvRate: TextView = view.findViewById(R.id.tvRate)
-        private val tvAge: TextView = view.findViewById(R.id.tvAge)
-        private val tvName: TextView = view.findViewById(R.id.tvName)
-        private val tvGenres: TextView = view.findViewById(R.id.tvGenres)
+    class VH(v: View) : RecyclerView.ViewHolder(v) {
 
-        fun bind(item: FilmDto) {
-            tvName.text = item.name
-            tvGenres.text = "детектив • боевик"
+        private val poster = v.findViewById<ImageView>(R.id.ivPoster)
+        private val name = v.findViewById<TextView>(R.id.tvName)
+        private val rate = v.findViewById<TextView>(R.id.tvRate)
+        private val age = v.findViewById<TextView>(R.id.tvAge)
 
-            val rate = item.details?.rate ?: 0.0
-            tvRate.text = if (rate > 0.0) String.format("%.1f ★", rate) else "—"
+        fun bind(film: FilmEntity) {
+            name.text = film.name
 
-            val age = item.details?.ageLimit ?: 0
-            tvAge.text = if (age > 0) "$age+" else "0+"
+            rate.visibility = if ((film.rate ?: 0.0) > 0) {
+                rate.text = String.format("%.1f", film.rate)
+                View.VISIBLE
+            } else View.GONE
 
-            val url = item.posterUrl
-            if (!url.isNullOrBlank()) {
-                Glide.with(ivPoster.context).load(url).centerCrop().into(ivPoster)
-            } else {
-                ivPoster.setImageResource(R.drawable.placeholder_poster)
-            }
+            age.visibility = if ((film.ageLimit ?: 0) > 0) {
+                age.text = "${film.ageLimit}+"
+                View.VISIBLE
+            } else View.GONE
 
-            itemView.setOnClickListener {
-                onItemClick?.invoke(item)
-            }
+            Glide.with(itemView)
+                .load("http://10.0.2.2:8888${film.posterUrl}")
+                .into(poster)
         }
     }
 }
