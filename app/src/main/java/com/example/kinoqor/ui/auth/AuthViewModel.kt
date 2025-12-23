@@ -31,28 +31,11 @@ class AuthViewModel(
 
         viewModelScope.launch {
             _state.value = LoginUiState.Loading
+
             val result = repository.login(email, password)
-            result.onSuccess {
-                prefs.saveToken(it.token)
-                _state.value = LoginUiState.Success(it.token)
-            }.onFailure {
-                _state.value = LoginUiState.Error(it.message ?: "Unknown error")
-            }
-        }
-    }
-
-    fun register(email: String, password: String) {
-        if (email.isBlank() || password.isBlank()) {
-            _state.value = LoginUiState.Error("Email and password required")
-            return
-        }
-
-        viewModelScope.launch {
-            _state.value = LoginUiState.Loading
-            val result = repository.register(email, password)
-            result.onSuccess {
-                prefs.saveToken(it.token)
-                _state.value = LoginUiState.Success(it.token)
+            result.onSuccess { data ->
+                prefs.saveToken(data.data.token)
+                _state.value = LoginUiState.Success(data.data.token)
             }.onFailure {
                 _state.value = LoginUiState.Error(it.message ?: "Unknown error")
             }
@@ -69,7 +52,7 @@ class AuthViewModel(
             _state.value = LoginUiState.Loading
             val result = repository.forgotPassword(email)
             result.onSuccess {
-                _state.value = LoginUiState.Success(null) // no token returned for forgot
+                _state.value = LoginUiState.Success(null)
             }.onFailure {
                 _state.value = LoginUiState.Error(it.message ?: "Failed to send reset email")
             }
@@ -84,10 +67,10 @@ class AuthViewModel(
 
         viewModelScope.launch {
             _state.value = LoginUiState.Loading
-            val result = repository.verifyPin(email, pinCode) // <-- must return Result<String>
+            val result = repository.verifyPin(email, pinCode)
             result.onSuccess { token ->
                 tempToken = token
-                _state.value = LoginUiState.Success(null) // use generic Success signal
+                _state.value = LoginUiState.Success(null)
             }.onFailure {
                 _state.value = LoginUiState.Error(it.message ?: "Invalid verification code")
             }

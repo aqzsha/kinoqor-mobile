@@ -62,6 +62,12 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.androidx.swiperefreshlayout)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+
+    kapt(libs.androidx.room.compiler)
+
     kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
